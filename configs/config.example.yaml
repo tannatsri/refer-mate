@@ -1,0 +1,11 @@
+app:
+  env: local
+  port: 8000
+
+database:
+  host: example
+  port: 5432
+  user: user
+  password: password
+  name: db_name
+  sslmode: disable
