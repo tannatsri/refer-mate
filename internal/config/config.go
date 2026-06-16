@@ -14,8 +14,9 @@ const (
 
 type Config struct {
 	App struct {
-		Env  string `yaml:"env"`
-		Port string `yaml:"port"`
+		Env     string `yaml:"env"`
+		Port    string `yaml:"port"`
+		BaseURL string `yaml:"base_url"`
 	} `yaml:"app"`
 
 	Database struct {
@@ -26,11 +27,20 @@ type Config struct {
 		Name     string `yaml:"name"`
 		SSLMode  string `yaml:"sslmode"`
 	} `yaml:"database"`
+
+	Google struct {
+		ClientID     string `yaml:"client_id"`
+		ClientSecret string `yaml:"client_secret"`
+		RedirectURL  string `yaml:"redirect_url"`
+	} `yaml:"google"`
+
+	JWT struct {
+		Secret      string `yaml:"secret"`
+		ExpiryHours int    `yaml:"expiry_hours"`
+	} `yaml:"jwt"`
 }
 
 func Load() (*Config, error) {
-
-	// Decide config file based on environment variable
 	env := os.Getenv("APP_ENV")
 	if env == "" {
 		env = EnvLocalhost

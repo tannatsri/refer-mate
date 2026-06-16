@@ -4,13 +4,15 @@ import (
 	"database/sql"
 
 	_ "github.com/lib/pq"
-	"go-template/internal/db"
 )
 
-func NewDB(databaseURL string) (*db.Queries, error) {
-	sqlDB, err := sql.Open("postgres", databaseURL)
+func NewDB(databaseURL string) (*sql.DB, error) {
+	db, err := sql.Open("postgres", databaseURL)
 	if err != nil {
 		return nil, err
 	}
-	return db.New(sqlDB), nil
+	if err := db.Ping(); err != nil {
+		return nil, err
+	}
+	return db, nil
 }
