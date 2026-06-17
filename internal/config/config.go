@@ -14,9 +14,10 @@ const (
 
 type Config struct {
 	App struct {
-		Env     string `yaml:"env"`
-		Port    string `yaml:"port"`
-		BaseURL string `yaml:"base_url"`
+		Env         string `yaml:"env"`
+		Port        string `yaml:"port"`
+		BaseURL     string `yaml:"base_url"`
+		FrontendURL string `yaml:"frontend_url"`
 	} `yaml:"app"`
 
 	Database struct {

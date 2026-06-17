@@ -14,9 +14,18 @@ func NewRouter(
 	tmplUC *usecase.TemplateUseCase,
 	campaignUC *usecase.CampaignUseCase,
 	trackingUC *usecase.TrackingUseCase,
+	frontendURL string,
 ) http.Handler {
 	r := mux.NewRouter()
 	r.Use(middlewear.Recovery)
+	r.Use(middlewear.CORS(frontendURL))
+
+	// gorilla/mux only invokes Use()-registered middleware for routes that
+	// match; without an explicit OPTIONS route, preflight requests fall
+	// through to mux's 404 handler and never get CORS headers.
+	r.PathPrefix("/").Methods(http.MethodOptions).HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusNoContent)
+	})
 
 	// Tracking routes (no auth required)
 	registerTrackingRoutes(r, trackingUC)
@@ -24,7 +33,7 @@ func NewRouter(
 	api := r.PathPrefix("/api/v1").Subrouter()
 
 	// Public auth routes
-	registerAuthRoutes(api, authUC)
+	registerAuthRoutes(api, authUC, frontendURL)
 
 	// Protected routes
 	protected := api.NewRoute().Subrouter()

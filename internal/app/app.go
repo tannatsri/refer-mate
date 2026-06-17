@@ -37,7 +37,7 @@ func New(cfg *config.Config) (*App, error) {
 	campaignUC := usecase.NewCampaignUseCase(campaignRepo, recipientRepo, emailRepo, templateRepo, gmailClient, cfg.App.BaseURL)
 	trackingUC := usecase.NewTrackingUseCase(emailRepo, campaignRepo)
 
-	router := routeHttp.NewRouter(authUC, tmplUC, campaignUC, trackingUC)
+	router := routeHttp.NewRouter(authUC, tmplUC, campaignUC, trackingUC, cfg.App.FrontendURL)
 
 	return &App{router: router}, nil
 }
